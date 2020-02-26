@@ -1,0 +1,95 @@
+<h2 class="page-header">
+  Dashboard
+</h2>
+<p>Welcome to your view of the current events.</p>
+
+<div>
+  <h3>
+    Your events
+    <button class="btn btn-primary pull-right" [routerLink]="['/event/create']">
+      Add new
+    </button>
+    <div class="clearfix"></div>
+  </h3>
+</div>
+
+<div class="table-responsive">
+  <p *ngIf="events.length <= 0" class="no-data text-center">
+    There are no events added yet!
+  </p>
+
+  <table class="table table-bordered" *ngIf="events.length > 0">
+    <thead>
+      <tr>
+        <th>Description</th>
+        <th class="text-center">Start</th>
+        <th class="text-center">End</th>
+        <th class="text-center" *ngIf="!isEditing">Options</th>
+      </tr>
+    </thead>
+
+    <tbody *ngIf="!isEditing">
+      <tr *ngFor="let event of events">
+        <td>{{ event.description }}</td>
+        <td>{{ event.start | date: "medium" }}</td>
+        <td>{{ event.end | date: "medium" }}</td>
+
+        <td align="center">
+          <button class="btn btn-warning" (click)="enableEditing(event)">
+            Modify
+          </button>
+          <button class="btn btn-danger" (click)="deleteEvent(event)">
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+
+    <tbody *ngIf="isEditing">
+      <tr>
+        <td>{{ event.description }}</td>
+        <td>{{ event.start | date: "medium" }}</td>
+        <td>{{ event.end | date: "medium" }}</td>
+      </tr>
+      <tr>
+        <td colspan="4">
+          <form class="form-inline" (ngSubmit)="updateEvent(event)">
+            <input
+              class="form-control mr-2"
+              type="text"
+              name="description"
+              [(ngModel)]="event.description"
+              placeholder="event.description"
+              required
+            />
+            <input
+              class="form-control mr-2"
+              type="date"
+              name="start"
+              placeholder="event.start"
+              [(ngModel)]="event.start" 
+              required
+            />
+            <input
+              class="form-control mr-2"
+              type="date"
+              name="end"
+              placeholder=" event.end"
+              [(ngModel)]="event.end" 
+              required
+            />
+            <button
+              class="btn btn-sm btn-primary mr-2"
+              type="submit"
+            >
+              <i class="fa fa-floppy-o"></i> Save
+            </button>
+            <button class="btn btn-sm btn-warning" (click)="cancelEditing()">
+              <i class="fa fa-times"></i> Cancel
+            </button>
+          </form>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,42 @@
+<div>
+  <h2 class="page-header">
+    Add Event
+  </h2>
+
+  <form (submit)="onEventCreateSubmit()">
+    <div class="form-group">
+      <label for="description">Description</label>
+      <input
+        type="text"
+        [(ngModel)]="description"
+        name="description"
+        class="form-control"
+        id="name"
+        placeholder="Enter event description"
+      />
+    </div>
+    <div class="form-group">
+      <label for="start">Start</label>
+      <input
+        type="date"
+        [(ngModel)]="start"
+        name="start"
+        class="form-control"
+        id="start"
+        placeholder="Enter start date"
+      />
+    </div>
+    <div class="form-group">
+      <label for="end">End</label>
+      <input
+        type="date"
+        [(ngModel)]="end"
+        name="end"
+        class="form-control"
+        id="end"
+        placeholder="Enter end date"
+      />
+    </div>
+    <input type="submit" class="btn btn-primary" value="Submit" />
+  </form>
+</div>
