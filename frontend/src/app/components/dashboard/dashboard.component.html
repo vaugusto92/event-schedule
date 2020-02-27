@@ -6,7 +6,11 @@
 <div>
   <h3>
     Your events
-    <button class="btn btn-primary pull-right" [routerLink]="['/event/create']">
+    <button
+      class="btn btn-primary pull-right"
+      *ngIf="!isEditing"
+      [routerLink]="['/event/create']"
+    >
       Add new
     </button>
     <div class="clearfix"></div>
@@ -67,7 +71,7 @@
               type="date"
               name="start"
               placeholder="event.start"
-              [(ngModel)]="event.start" 
+              [(ngModel)]="event.start"
               required
             />
             <input
@@ -75,13 +79,10 @@
               type="date"
               name="end"
               placeholder=" event.end"
-              [(ngModel)]="event.end" 
+              [(ngModel)]="event.end"
               required
             />
-            <button
-              class="btn btn-sm btn-primary mr-2"
-              type="submit"
-            >
+            <button class="btn btn-sm btn-primary mr-2" type="submit">
               <i class="fa fa-floppy-o"></i> Save
             </button>
             <button class="btn btn-sm btn-warning" (click)="cancelEditing()">

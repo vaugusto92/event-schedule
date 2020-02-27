@@ -24,3 +24,7 @@ module.exports = mongoose.model("Event", EventSchema);
 module.exports.addEvent = function(event, callback) {
   event.save(callback);
 };
+
+module.exports.deleteEvent = function(event, callback) {
+  event.delete(callback);
+};

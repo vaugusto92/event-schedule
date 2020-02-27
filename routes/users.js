@@ -7,7 +7,7 @@ router.post("/register", routeCtrl.registerController);
 //Authentication Route
 router.post("/authenticate", routeCtrl.authenticationController);
 //Profile Route
-router.get("/profile", routeCtrl.profileController);
+router.get("/profile/:id", routeCtrl.profileController);
 //Forgot password route
 router.post("/forgot", routeCtrl.forgotController);
 //Reset password Route

@@ -11,8 +11,6 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { HomeComponent } from './components/home/home.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { EventComponent } from './components/event/event.component';
-import { ProfileComponent } from './components/profile/profile.component';
 
 import { ValidateService } from './services/validate.service';
 import { FlashMessagesModule } from 'angular2-flash-messages';
@@ -27,8 +25,6 @@ const appRoutes: Routes = [
   {path:'register', component: RegisterComponent},
   {path:'login', component: LoginComponent},
   {path:'dashboard', component: DashboardComponent, canActivate:[AuthGuard]},
-  {path:'profile', component: ProfileComponent, canActivate:[AuthGuard]},
-  {path:'event', component: EventComponent, canActivate:[AuthGuard]},
   {path:'event/create', component: EventCreateComponent, canActivate:[AuthGuard]},
   {path:'event/update', component: EventUpdateComponent, canActivate:[AuthGuard]},
 ];
@@ -41,8 +37,6 @@ const appRoutes: Routes = [
     RegisterComponent,
     HomeComponent,
     DashboardComponent,
-    ProfileComponent,
-    EventComponent,
     EventCreateComponent,
     EventUpdateComponent,
   ],

@@ -30,11 +30,12 @@ export class EventsService {
 
   updateEvent(event) {
     let headers = new Headers();
-    headers.append("Content-type", "application/json");
-
-    const options = new RequestOptions({ headers: headers });
-
     let url = `${this.baseUri}/update/${event._id}`;
     return this.httpClient.put(url, event);
+  }
+
+  deleteEvent(event): Observable<any> {
+    let url = `${this.baseUri}/delete/${event._id}`;
+    return this.httpClient.delete(url, event);
   }
 }

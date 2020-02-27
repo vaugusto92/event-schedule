@@ -11,4 +11,7 @@ router.post("/create", controller.createEvent);
 // Update event route
 router.put("/update/:id", controller.updateEvent);
 
+// Delete event route
+router.delete("/delete/:id", controller.deleteEvent);
+
 module.exports = router;
