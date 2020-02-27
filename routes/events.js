@@ -5,6 +5,9 @@ const controller = require("../controllers/eventController");
 // List events route
 router.get("/list", controller.listEvents);
 
+// List events by user id route
+router.get("/list/:id", controller.listEventsByUser);
+
 // Create event route
 router.post("/create", controller.createEvent);
 

@@ -17,6 +17,7 @@ import { FlashMessagesModule } from 'angular2-flash-messages';
 import { AuthService } from './services/auth.service';
 import { AuthGuard } from "./guards/auth.guard";
 import { EventsService } from './services/events.service';
+import { UsersService } from './services/users.service';
 import { EventCreateComponent } from './components/event-create/event-create.component';
 import { EventUpdateComponent } from './components/event-update/event-update.component';
 
@@ -53,6 +54,7 @@ const appRoutes: Routes = [
     AuthService,
     AuthGuard,
     EventsService,
+    UsersService,
   ],
   bootstrap: [AppComponent]
 })

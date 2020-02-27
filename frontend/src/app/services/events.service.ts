@@ -27,6 +27,11 @@ export class EventsService {
   listEvents(): Observable<Event[]> {
     return this.httpClient.get<Event[]>(`${this.baseUri}/list`);
   }
+  
+  listInvitedEvents(user): Observable<Event[]> {
+    let url = `${this.baseUri}/list/${user.id}`
+    return this.httpClient.get<Event[]>(url);
+  }
 
   updateEvent(event) {
     let headers = new Headers();

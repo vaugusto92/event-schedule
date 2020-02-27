@@ -18,7 +18,7 @@
     <div class="form-group">
       <label for="start">Start</label>
       <input
-        type="date"
+        type="datetime-local"
         [(ngModel)]="start"
         name="start"
         class="form-control"
@@ -29,7 +29,7 @@
     <div class="form-group">
       <label for="end">End</label>
       <input
-        type="date"
+        type="datetime-local"
         [(ngModel)]="end"
         name="end"
         class="form-control"
@@ -37,6 +37,82 @@
         placeholder="Enter end date"
       />
     </div>
+
+    <div *ngIf="users.length > 1">
+      <h3>
+        Use this button to invite people for your new event.
+
+        <!-- Button trigger modal -->
+        <button
+          type="button"
+          class="btn btn-primary pull-right"
+          data-toggle="modal"
+          data-target="#exampleModal"
+        >
+          Invite Users
+        </button>
+
+        <!-- Modal -->
+        <div
+          class="modal fade"
+          id="exampleModal"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h2 class="modal-title" id="exampleModalLabel">Users</h2>
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                  (click)="inviteUser(user, event)"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+
+              <!-- Modal data appears from here -->
+              <div class="modal-body">
+                <div class="list-group">
+                  <a *ngFor="let user of users"
+                    class="list-group-item clearfix"
+                    onclick="alert('Action1 -> Details');"
+                  >
+                    {{ user.name }}
+                    <span class="pull-right">
+                      <span
+                        class="btn btn-xs btn-default"
+                        onclick="alert('Action1 -> Play'); event.stopPropagation();"
+                      >
+                        <span
+                          class="glyphicon glyphicon-play"
+                          aria-hidden="true"
+                          (click)="inviteUser(user._id)"
+                        ></span>
+                      </span>
+                    </span>
+                  </a>
+                </div>
+              </div>
+              <!-- Modal data appears from here -->
+
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">
+                  OK
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="clearfix"></div>
+      </h3>
+    </div>
+
     <input type="submit" class="btn btn-primary" value="Submit" />
   </form>
 </div>

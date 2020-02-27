@@ -236,3 +236,13 @@ module.exports.resetController = function(req, res) {
     }
   );
 }
+
+// Retrieve all users
+module.exports.listUsers = async (req, res) => {
+  try {
+    const docs = await User.find({});
+    res.status(200).json(docs);
+  } catch (err) {
+    return res.status(400).json({ error: err.message });
+  }
+};

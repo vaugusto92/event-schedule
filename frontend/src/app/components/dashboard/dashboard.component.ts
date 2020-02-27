@@ -1,8 +1,15 @@
 import { Component, OnInit } from "@angular/core";
 import { EventsService } from "../../services/events.service";
 import { FlashMessagesService } from "angular2-flash-messages";
-import { Event } from "../../models/event";
+import { AuthService } from '../../services/auth.service';
+import { UsersService } from "../../services/users.service";
+
+
 import { Router } from "@angular/router";
+
+import { Event } from "../../models/event";
+import { User } from "../../models/user";
+import { Invitation } from "../../models/invitation";
 
 @Component({
   selector: "app-dashboard",
@@ -12,17 +19,59 @@ import { Router } from "@angular/router";
 export class DashboardComponent implements OnInit {
   event = new Event();
   events: Event[] = [];
+
+  invitations: Invitation[] = [];
+  invitedEvents: Event[] = [];
+  
+  user;
+  users: User[] = [];
+
   isEditing = false;
 
   constructor(
     private eventsService: EventsService,
     private flashMessage: FlashMessagesService,
+    private authService: AuthService,
+    private usersService: UsersService,
     private router: Router,
   ) {}
 
   ngOnInit() {
+    this.isEditing = false;
+    this.loadUser();
     this.populateEvents();
+    this.populateInvitedEvents();
   }
+
+  /**
+   * General use methods.
+   */
+
+  loadUser() {
+    this.user = JSON.parse(this.authService.retrieveUser());
+  }
+
+  enableEditing(event) {
+    this.isEditing = true;
+    this.event = event;
+    this.populateUsers();
+    this.populateInvitedEvents();
+  }
+  
+  cancelEditing() {
+    this.isEditing = false;
+    this.event = new Event();
+    this.flashMessage.show("Editing cancelled.", {
+      cssClass: "alert-warning",
+      timeout: 2000
+    });
+    this.populateEvents();
+    this.populateInvitedEvents();
+  }
+
+  /**
+   * Event-related methods.
+   */
 
   populateEvents() {
     this.eventsService.listEvents().subscribe(data => {
@@ -59,20 +108,83 @@ export class DashboardComponent implements OnInit {
       cssClass: 'alert-success', timeout: 2000
     });
     this.populateEvents();
+    this.populateInvitedEvents();
+    this.router.navigate(["/dashboard"]);
   }
 
-  enableEditing(event) {
-    this.isEditing = true;
-    this.event = event;
-  }
+  /**
+   * Invitation-related methods.
+   */
 
-  cancelEditing() {
-    this.isEditing = false;
-    this.event = new Event();
-    this.flashMessage.show("Editing cancelled.", {
-      cssClass: "alert-warning",
-      timeout: 2000
+  populateInvitedEvents() {
+    this.eventsService.listInvitedEvents(this.user).subscribe(data => {
+      this.invitedEvents = data;
     });
-    this.populateEvents();
+  }
+
+  findByUserId(invitations, userId) {
+    var index = invitations.map(function(element) {
+      return element.id
+    }).indexOf(userId)
+
+    return invitations[index]
+  }
+  
+  acceptInvitation(event) {
+    this.manageInvitation(event, true);
+  }
+  
+  rejectInvitation(event) {
+    this.manageInvitation(event, false);
+  }
+
+  manageInvitation(event, decision) {
+    var index = this.findInvitation(event);
+    
+    if (index != -1) {
+      event.invitations[index]['accepted'] = decision;
+      this.updateEvent(event);
+    }
+  }
+  
+  findInvitation(event) {
+    for (let i = 0; i < event.invitations.length; i++) {
+      if (event.invitations[i]['userId'] === this.user.id) {
+        return i;
+      }
+    }
+    
+    return -1;
+  }
+  
+  getEventStatus(event) {
+    var index = this.findInvitation(event);
+    var status;
+
+    if (index != -1) {
+      status = event.invitations[index]['accepted']
+    }
+
+    if (status == null) {
+      return 'NO ANSWER'
+    } 
+
+    return status === true ? 'ACCEPTED' : 'REJECTED';
+ }
+
+  populateUsers() {
+    this.usersService.listUsers().subscribe(data => {
+      this.users = data;
+    });
+  }
+
+  inviteUser(id) {
+    console.log(id);
+    const invitation = {
+      userId: id,
+      accepted: null,
+    };
+    
+    this.event['invitations'].push(invitation);
   }
 }

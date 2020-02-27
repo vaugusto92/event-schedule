@@ -1,22 +1,21 @@
 <h2 class="page-header">
   Dashboard
 </h2>
-<p>Welcome to your view of the current events.</p>
+<h4>Welcome, {{ user.name }}! This is your view of the current events.</h4>
 
 <div>
   <h3>
     Your events
-    <button
-      class="btn btn-primary pull-right"
-      *ngIf="!isEditing"
-      [routerLink]="['/event/create']"
-    >
-      Add new
-    </button>
-    <div class="clearfix"></div>
   </h3>
+  <button
+    class="btn btn-primary pull-right"
+    *ngIf="!isEditing"
+    [routerLink]="['/event/create']"
+  >
+    Add new
+  </button>
+  <div class="clearfix"></div>
 </div>
-
 <div class="table-responsive">
   <p *ngIf="events.length <= 0" class="no-data text-center">
     There are no events added yet!
@@ -28,6 +27,7 @@
         <th>Description</th>
         <th class="text-center">Start</th>
         <th class="text-center">End</th>
+        <th class="text-center">Owner</th>
         <th class="text-center" *ngIf="!isEditing">Options</th>
       </tr>
     </thead>
@@ -37,6 +37,7 @@
         <td>{{ event.description }}</td>
         <td>{{ event.start | date: "medium" }}</td>
         <td>{{ event.end | date: "medium" }}</td>
+        <td class="text-center">{{ event.createdBy }}</td>
 
         <td align="center">
           <button class="btn btn-warning" (click)="enableEditing(event)">
@@ -54,43 +55,175 @@
         <td>{{ event.description }}</td>
         <td>{{ event.start | date: "medium" }}</td>
         <td>{{ event.end | date: "medium" }}</td>
+        <td>{{ event.createdBy }}</td>
       </tr>
+    </tbody>
+  </table>
+</div>
+
+<h3>
+  Invitations
+</h3>
+<div *ngIf="invitedEvents.length == 0 && !isEditing">
+  <p class="no-data text-center">
+    There are no invitations for you!
+  </p>
+</div>
+
+<div class="table-responsive" *ngIf="invitedEvents.length > 0 && !isEditing">
+  <table class="table table-bordered">
+    <thead>
       <tr>
-        <td colspan="4">
-          <form class="form-inline" (ngSubmit)="updateEvent(event)">
-            <input
-              class="form-control mr-2"
-              type="text"
-              name="description"
-              [(ngModel)]="event.description"
-              placeholder="event.description"
-              required
-            />
-            <input
-              class="form-control mr-2"
-              type="date"
-              name="start"
-              placeholder="event.start"
-              [(ngModel)]="event.start"
-              required
-            />
-            <input
-              class="form-control mr-2"
-              type="date"
-              name="end"
-              placeholder=" event.end"
-              [(ngModel)]="event.end"
-              required
-            />
-            <button class="btn btn-sm btn-primary mr-2" type="submit">
-              <i class="fa fa-floppy-o"></i> Save
-            </button>
-            <button class="btn btn-sm btn-warning" (click)="cancelEditing()">
-              <i class="fa fa-times"></i> Cancel
-            </button>
-          </form>
+        <th>Description</th>
+        <th class="text-center">Start</th>
+        <th class="text-center">End</th>
+        <th class="text-center">Status</th>
+        <th class="text-center">Owner</th>
+        <th class="text-center">Options</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let invitedEvent of invitedEvents">
+        <td>{{ invitedEvent.description }}</td>
+        <td>{{ invitedEvent.start | date: "medium" }}</td>
+        <td>{{ invitedEvent.end | date: "medium" }}</td>
+        <td class="text-center">{{ getEventStatus(invitedEvent) }}</td>
+        <td class="text-center">{{ invitedEvent.createdBy }}</td>
+
+        <td align="center">
+          <button
+            class="btn btn-success"
+            (click)="acceptInvitation(invitedEvent)"
+          >
+            Accept
+          </button>
+          <button
+            class="btn btn-danger"
+            (click)="rejectInvitation(invitedEvent)"
+          >
+            Reject
+          </button>
         </td>
       </tr>
     </tbody>
   </table>
+</div>
+
+<div *ngIf="isEditing">
+  <form (ngSubmit)="updateEvent(event)">
+    <div class="form-group row">
+      <label for="description" class="col-sm-3 col-form-label">
+        Description
+      </label>
+      <div class="col-sm-10">
+        <input
+          id="description"
+          class="form-control"
+          type="text"
+          name="description"
+          [(ngModel)]="event.description"
+          placeholder="event.description"
+          required
+        />
+      </div>
+
+      <div class="col-sm-10">
+        <label for="start" class="col-sm-2 col-form-label">
+          Start
+        </label>
+        <input
+          id="start"
+          class="form-control"
+          type="date"
+          name="start"
+          placeholder="event.start"
+          [(ngModel)]="event.start"
+        />
+      </div>
+
+      <div class="col-sm-10">
+        <label for="end" class="col-sm-2 col-form-label">
+          End
+        </label>
+        <input
+          class="form-control"
+          type="date"
+          name="end"
+          placeholder=" event.end"
+          [(ngModel)]="event.end"
+        />
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary pull-right">
+      Save
+    </button>
+    <button
+      type="button"
+      (click)="cancelEditing()"
+      class="btn btn-warning pull-right"
+    >
+      Cancel
+    </button>
+  </form>
+
+  <button
+    type="button"
+    class="btn btn-primary pull-right"
+    data-toggle="modal"
+    data-target="#exampleModal"
+  >
+    Invite Users
+  </button>
+
+  <div
+    class="modal fade"
+    id="exampleModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title" id="exampleModalLabel">Users</h2>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <div class="list-group">
+            <a *ngFor="let user of users" class="list-group-item clearfix">
+              {{ user.name }}
+              <span class="pull-right">
+                <span
+                  class="btn btn-xs btn-default"
+                  (click)="inviteUser(user._id)"
+                >
+                  Invite
+                  <span
+                    class="glyphicon glyphicon-play"
+                    aria-hidden="true"
+                  ></span>
+                </span>
+              </span>
+            </a>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">
+            OK
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

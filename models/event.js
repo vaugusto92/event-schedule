@@ -1,6 +1,9 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
-const config = require("../config/database");
+
+var InvitationSchema = new mongoose.Schema({
+   userId: String,
+   accepted: Boolean
+});
 
 const EventSchema = mongoose.Schema({
   description: {
@@ -16,10 +19,19 @@ const EventSchema = mongoose.Schema({
     type: Date,
     required: true,
     unique: true
+  },
+  createdBy: {
+    type: String,
+    required: true
+  },
+  invitations: {
+    type: [InvitationSchema],
+    default: null,
   }
 });
 
 module.exports = mongoose.model("Event", EventSchema);
+
 
 module.exports.addEvent = function(event, callback) {
   event.save(callback);
