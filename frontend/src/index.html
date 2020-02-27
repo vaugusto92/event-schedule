@@ -15,29 +15,6 @@
   <app-root>Loading...</app-root>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
   <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
-
-  <!-- <script>
-    $(document).ready(function () {
-      $('.navbar-collapse ul li a').click(function () {
-        $(".navbar-collapse").collapse('hide');
-      });
-      $('body').bind('touchstart', function preventZoom(e) {
-        var t2 = e.timeStamp;
-        var t1 = $(this).data('lastTouch') || t2;
-        var dt = t2 - t1;
-        var fingers = e.originalEvent.touches.length;
-        $(this).data('lastTouch', t2);
-        if (!dt || dt > 500 || fingers > 1) {
-          return; // not double-tap
-        }
-        e.preventDefault(); // double tap - prevent the zoom
-        // also synthesize click events we just swallowed up
-        $(e.target).trigger('click');
-
-      });
-    });
-
-  </script> -->
 </body>
 
 </html>
