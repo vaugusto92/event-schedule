@@ -202,16 +202,9 @@
           <div class="list-group">
             <a *ngFor="let user of users" class="list-group-item clearfix">
               {{ user.name }}
-              <span class="pull-right">
-                <span
-                  class="btn btn-xs btn-default"
-                  (click)="inviteUser(user._id)"
-                >
+              <span class="pull-right" *ngIf="notInvited(user)">
+                <span class="btn btn-xs btn-default" (click)="inviteUser(user)">
                   Invite
-                  <span
-                    class="glyphicon glyphicon-play"
-                    aria-hidden="true"
-                  ></span>
                 </span>
               </span>
             </a>

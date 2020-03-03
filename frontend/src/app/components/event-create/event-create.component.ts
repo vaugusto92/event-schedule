@@ -25,6 +25,8 @@ export class EventCreateComponent implements OnInit {
 
   events: Event[] = [];
   users: User[] = [];
+  invitedUsers: Boolean[] = [];
+  user_count;
 
   constructor(
     private eventsService: EventsService,
@@ -54,6 +56,18 @@ export class EventCreateComponent implements OnInit {
     this.usersService.listUsers().subscribe(data => {
       this.users = data;
     });
+  }
+
+  manageInvitation(user) {
+    const index = this.users.indexOf(user);
+    this.invitedUsers[index] = true;
+  }
+
+  loadInvitations() {
+    if (this.invitedUsers.length == 0) {
+      const length = this.users.length;
+      this.invitedUsers = Array(length).fill(false);
+    }
   }
 
   validateEventCreation(event) {
@@ -112,13 +126,20 @@ export class EventCreateComponent implements OnInit {
     });
   }
 
-  inviteUser(id) {
-    console.log(id)
+  inviteUser(user) {
+    this.loadInvitations();
+
     const invitation = {
-      userId: id,
+      userId: user._id,
       accepted: null,
     };
 
     this.invitations.push(invitation);
+    this.manageInvitation(user);
+  }
+
+  notInvited(user) {
+    const index = this.users.indexOf(user);
+    return this.invitedUsers[index] == true ? false : true;
   }
 }

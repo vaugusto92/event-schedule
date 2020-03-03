@@ -25,6 +25,7 @@ export class DashboardComponent implements OnInit {
   
   user;
   users: User[] = [];
+  invitedUsers: Boolean[] = [];
 
   isEditing = false;
 
@@ -178,13 +179,30 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  inviteUser(id) {
-    console.log(id);
+  inviteUser(user) {
     const invitation = {
-      userId: id,
+      userId: user._id,
       accepted: null,
     };
     
     this.event['invitations'].push(invitation);
+    this.manageInvitation(user);
+  }
+
+  notInvited(user) {
+    const index = this.users.indexOf(user);
+    return this.invitedUsers[index] == true ? false : true;
+  }
+
+  manageInvitation(user) {
+    const index = this.users.indexOf(user);
+    this.invitedUsers[index] = true;
+  }
+
+  loadInvitations() {
+    if (this.invitedUsers.length == 0) {
+      const length = this.users.length;
+      this.invitedUsers = Array(length).fill(false);
+    }
   }
 }

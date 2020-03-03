@@ -41,7 +41,10 @@ module.exports.authenticationController = (req, res, next) => {
 	const password = req.body.password;
 
 	User.getUsername(username, (err, user) => {
-		if (err) throw err;
+		if (err) {
+			throw err;
+		}
+
 		if (!user) {
 			return res.json({
 				success: false,
@@ -50,7 +53,10 @@ module.exports.authenticationController = (req, res, next) => {
 		}
 
 		User.comparePassword(password, user.password, (err, isMatch) => {
-			if (err) throw err;
+			if (err) {
+				throw err;
+			}
+
 			if (isMatch) {
 				// using JSON.parse(JSON.stringify(doc)) as Passport have changed methods and now just passing user won't work
 				const token = jwt.sign(

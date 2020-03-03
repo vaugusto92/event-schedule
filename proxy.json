@@ -1,12 +1,12 @@
 {
-    "/": {
-        "target": "https://127.0.0.1:8080",
-        "secure": "false",
-        "changeOrigin": true
-    },
-    "/events": {
-        "target": "https://127.0.0.1:8080/events",
-        "secure": "false",
-        "changeOrigin": true
-    }
+	"/": {
+		"target": "https://127.0.0.1:8080",
+		"secure": "false",
+		"changeOrigin": true
+	},
+	"/events": {
+		"target": "https://127.0.0.1:8080/events",
+		"secure": "false",
+		"changeOrigin": true
+	}
 }

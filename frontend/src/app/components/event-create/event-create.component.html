@@ -70,7 +70,6 @@
                   class="close"
                   data-dismiss="modal"
                   aria-label="Close"
-                  (click)="inviteUser(user, event)"
                 >
                   <span aria-hidden="true">&times;</span>
                 </button>
@@ -79,21 +78,17 @@
               <!-- Modal data appears from here -->
               <div class="modal-body">
                 <div class="list-group">
-                  <a *ngFor="let user of users"
+                  <a
+                    *ngFor="let user of users"
                     class="list-group-item clearfix"
-                    onclick="alert('Action1 -> Details');"
                   >
                     {{ user.name }}
-                    <span class="pull-right">
+                    <span class="pull-right" *ngIf="notInvited(user)">
                       <span
                         class="btn btn-xs btn-default"
-                        onclick="alert('Action1 -> Play'); event.stopPropagation();"
+                        (click)="inviteUser(user)"
                       >
-                        <span
-                          class="glyphicon glyphicon-play"
-                          aria-hidden="true"
-                          (click)="inviteUser(user._id)"
-                        ></span>
+                        Invite
                       </span>
                     </span>
                   </a>
@@ -102,7 +97,11 @@
               <!-- Modal data appears from here -->
 
               <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal">
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  data-dismiss="modal"
+                >
                   OK
                 </button>
               </div>

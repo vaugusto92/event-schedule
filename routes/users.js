@@ -9,6 +9,6 @@ router.post("/register", controller.registerController);
 router.post("/authenticate", controller.authenticationController);
 
 // List Users Route
-router.get("/list", controller.listUsers)
+router.get("/list", controller.listUsers);
 
 module.exports = router;

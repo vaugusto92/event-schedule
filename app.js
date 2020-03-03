@@ -7,14 +7,16 @@ const mongoose = require("mongoose");
 const config = require("./config/database");
 
 // Connect To Database
-mongoose.connect(config.database,{ useMongoClient: true }).then(()=>{
-    console.log("Connected to Database " + config.database);
-},(err)=>{
-    if(err)
-    {
-        console.log("Database error " + err);
-    }
-});
+mongoose.connect(config.database, { useMongoClient: true }).then(
+	() => {
+		console.log("Connected to Database " + config.database);
+	},
+	err => {
+		if (err) {
+			console.log("Database error " + err);
+		}
+	}
+);
 
 const app = express();
 
@@ -40,23 +42,21 @@ app.use(passport.session());
 require("./config/passport")(passport);
 
 ///Users/Routes
-app.use('/', express.static(path.join(__dirname, 'dist/mean-stack-crud-app')))
+app.use("/", express.static(path.join(__dirname, "dist/event-schedule-app")));
 app.use("/users", users);
 app.use("/events", events);
 
-// // Index Route
-// app.get("/", (req, res) => {
-//   res.send("invaild endpoint");
-// });
-
+// Index Route
+app.get("/", (req, res) => {
+	res.send("invaild endpoint");
+});
 
 //production only
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public/index.html'));
-}); 
-
+app.get("*", (req, res) => {
+	res.sendFile(path.join(__dirname, "public/index.html"));
+});
 
 // Start Server
 app.listen(port, () => {
-  console.log("Server started on port " + port);
+	console.log("Server started on port " + port);
 });

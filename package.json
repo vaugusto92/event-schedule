@@ -4,7 +4,8 @@
   "description": "MEAN event schedule app",
   "main": "app.js",
   "scripts": {
-    "start": "ng serve --proxy-config proxy.json --ssl true"
+    "start": "ng serve --proxy-config proxy.json --ssl true",
+    "typedoc":"typedoc --mode modules -module commonjs --exclude **/*.spec.ts --out docs/typedoc src/app"
   },
   "dependencies": {
     "bcryptjs": "2.4.3",
@@ -21,6 +22,7 @@
   "author": "Victor Augusto",
   "license": "MIT",
   "devDependencies": {
-    "@angular/cli": "^1.6.0"
+    "@angular/cli": "^1.6.0",
+    "typedoc": "^0.16.11"
   }
 }
