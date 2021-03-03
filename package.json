@@ -17,7 +17,7 @@
     "nodemailer": "^4.6.0",
     "passport": "0.4.0",
     "passport-jwt": "3.0.1",
-    "pug": "^2.0.0-rc.4"
+    "pug": "^3.0.1"
   },
   "author": "Victor Augusto",
   "license": "MIT",
